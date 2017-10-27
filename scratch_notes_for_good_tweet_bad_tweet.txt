@@ -1,0 +1,115 @@
+
+So I always use a smaller version to beta test 
+
+
+I realize the difference between "this" "this!" "this!!" "this!!!" may result in a lot of otherwise useless features
+
+We shouldn't remove all punctuations because contractions exist and "do not" and "don't" have different pragmatic features
+
+It's 2k17, and emojis exist, but python cant handle that quite readily yet
+
+
+
+
+FEATURES
+
+558415
+
+
+Removed websites
+
+493011
+
+
+Treat UPPER and lower the same
+
+
+452958
+
+
+Do not consider irregular tokens that arent in the English dict
+
+107520
+
+
+for words in tweets:
+	mini_vocab = []
+	for w in words.split():
+
+		if w in stopwords:
+			continue
+
+			
+		if len(w) >= 3:
+			if w[0] == "@" or w.startswith("www") or w.startswith("http"): # we dont care about who gets tagged
+				continue
+
+			else:		
+					 #we probably shouldnt discern #happy and happy
+				#w = w.strip('?:!.,;())[]]}') #note that "im so happy:)" the :) wil "im so happy :)"
+				w = w.translate(None, string.punctuation)
+				if w.isupper(): #HELLO differs than Hello
+					mini_vocab.append(w)
+				mini_vocab.append(w.lower()) 
+	vocab.append(mini_vocab)
+
+
+to
+
+
+	for w in words.split():
+		if w[0] == "@" or w.startswith("www") or w.startswith("http"): # we dont care about who gets tagged
+				continue
+
+		w = w.translate(None, string.punctuation)
+		w = w.lower()
+		if w in stopwords:
+			continue
+
+		if w not in englishDict and len(w) > 5: #so as to allow tokens like "wth" "lmfao" "lmao" "rofl"
+			continue
+		
+		mini_vocab.append(w) 
+	vocab.append(mini_vocab)
+
+
+
+Reduced dataset to 10000 instead of 1 mil
+
+8264
+
+at 10000, predicted 0 for both love and hate tweet
+
+
+
+Increased dataset to 52000
+
+19528
+
+That's cool, although an increase of data by 5x, features increased by ~2.3x
+
+
+
+
+
+For a dataset of 5200
+
+5855
+
+10-24-17 22:46:20 TEST TIME
+
+
+For a dataset of 52000
+
+
+
+
+
+
+Somethings i learned...
+
+pronouns typically dont contribute to sentiment 
+
+we should be incremental with how much data we process 
+
+Training could take a longgggggg time
